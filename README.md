@@ -1,7 +1,7 @@
 # wex-project
 Challenge for wex company
 
-Language: Java
-Framework: Spring
-Architecture: Hexagonal
-Communication: REST
+Language: Java <br>
+Framework: Spring <br>
+Architecture: Hexagonal <br>
+Communication: REST <br>
