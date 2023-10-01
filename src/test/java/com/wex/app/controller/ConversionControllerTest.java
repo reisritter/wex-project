@@ -43,5 +43,26 @@ class ConversionControllerTest {
         assertEquals(convertedAmount.getId(),body.getId());
     }
 
+    @Test
+    void testGetByCountryControllerSucess(){
+
+        ConvertedAmount convertedAmount = easyRandom.nextObject(ConvertedAmount.class);
+        when(conversionPort.getByCountry(1L,"Brazil")).thenReturn(convertedAmount);
+
+        var result = conversionController.getByCountry(1L,"Brazil");
+        ConvertedAmount body = (ConvertedAmount) result.getBody();
+
+        assertNotNull(result);
+        assertNotNull(body);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+
+        assertEquals(convertedAmount,body);
+        assertEquals(convertedAmount.getExchangeRateList(),body.getExchangeRateList());
+        assertEquals(convertedAmount.getAmount(),body.getAmount());
+        assertEquals(convertedAmount.getDescription(),body.getDescription());
+        assertEquals(convertedAmount.getTransactionDate(),body.getTransactionDate());
+        assertEquals(convertedAmount.getId(),body.getId());
+    }
+
 
 }

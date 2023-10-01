@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface RateExchangePort {
     List<ExchangeRate> get(LocalDate date);
+    List<ExchangeRate> getByCountry(LocalDate date,String name);
 }

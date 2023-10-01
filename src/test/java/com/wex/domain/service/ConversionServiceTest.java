@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -57,5 +58,18 @@ class ConversionServiceTest {
         } catch (WexBusinessException e) {
             assertEquals("It was not found. Order object is null", e.getMessage());
         }
+    }
+    @Test
+    void shouldGetConvertedAmountByCountry() {
+
+        Order order = easyRandom.nextObject(Order.class);
+        List<ExchangeRate> exchangeRateList = easyRandom.objects(ExchangeRate.class,1).toList();
+        ConvertedAmount convertedAmount = ConvertedAmountMapper.INSTANCE.mapFrom(exchangeRateList,order);
+
+        when(orderService.get(1L)).thenReturn(order);
+        when(rateExchangePort.getByCountry(order.getTransactionDate(),"Brazil")).thenReturn(exchangeRateList);
+
+        ConvertedAmount convertedAmountResponse = conversionService.getByCountry(1L,"Brazil");
+        assertEquals(convertedAmount, convertedAmountResponse);
     }
 }

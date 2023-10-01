@@ -19,8 +19,16 @@ public class RateExchangeAdapter implements RateExchangePort {
 
     @Override
     public List<ExchangeRate> get(LocalDate date){
+        String page = "&page[size]=1000";
+        ResponseEntity<ResponseAPI> responseEntity = restTemplate.exchange(getUrl(date)+page, HttpMethod.GET, new HttpEntity<>(getHeader()),ResponseAPI.class);
+        var response = validateResponse(responseEntity);
+        return response.getData().stream().map(ExchangeRateMapper.INSTANCE::mapFrom).toList();
+    }
 
-        ResponseEntity<ResponseAPI> responseEntity = restTemplate.exchange(getUrl(date), HttpMethod.GET, new HttpEntity<>(getHeader()),ResponseAPI.class);
+    @Override
+    public List<ExchangeRate> getByCountry(LocalDate date, String name) {
+        String country = ",country:eq:"+name;
+        ResponseEntity<ResponseAPI> responseEntity = restTemplate.exchange(getUrl(date)+country, HttpMethod.GET, new HttpEntity<>(getHeader()),ResponseAPI.class);
         var response = validateResponse(responseEntity);
         return response.getData().stream().map(ExchangeRateMapper.INSTANCE::mapFrom).toList();
     }

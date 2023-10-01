@@ -23,7 +23,7 @@ public class OrderService implements OrderServicePort {
 
     @Override
     public Order get(Long id) {
-        OrderEntity orderEntity = orderRepository.findById(id).orElse(new OrderEntity());
+        OrderEntity orderEntity = orderRepository.findById(id).orElse(null);
         return OrderMapper.INSTANCE.mapFrom(orderEntity);
     }
 }

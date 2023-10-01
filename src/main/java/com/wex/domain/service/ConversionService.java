@@ -24,11 +24,23 @@ public class ConversionService implements ConversionPort {
 
     @Override
     public ConvertedAmount get(Long id){
+        Order order = getOrder(id);
+        List<ExchangeRate> exchangeRateList = rateExchangePort.get(order.getTransactionDate());
+        return ConvertedAmountMapper.INSTANCE.mapFrom(exchangeRateList,order);
+    }
+
+    @Override
+    public ConvertedAmount getByCountry(Long id, String name) {
+        Order order = getOrder(id);
+        List<ExchangeRate> exchangeRateList = rateExchangePort.getByCountry(order.getTransactionDate(),name);
+        return ConvertedAmountMapper.INSTANCE.mapFrom(exchangeRateList,order);
+    }
+    
+    private Order getOrder(Long id){
         Order order = orderService.get(id);
         if(Objects.isNull(order))
             throw new WexBusinessException("It was not found. Order object is null");
-        List<ExchangeRate> exchangeRateList = rateExchangePort.get(order.getTransactionDate());
-        return ConvertedAmountMapper.INSTANCE.mapFrom(exchangeRateList,order);
+        return order;
     }
 
 }

@@ -30,4 +30,10 @@ public class ApplicationControllerAdvice {
         {
             return new ApiErrors(ex.getMessage());
         }
+        @ExceptionHandler(NotFoundException.class)
+        @ResponseStatus(value = HttpStatus.NOT_FOUND)
+        public ApiErrors handleNotFound(NotFoundException ex)
+        {
+            return new ApiErrors(ex.getMessage());
+        }
 }
