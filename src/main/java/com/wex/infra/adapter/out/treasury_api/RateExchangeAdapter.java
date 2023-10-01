@@ -5,6 +5,7 @@ import com.wex.domain.model.ExchangeRate;
 import com.wex.domain.port.RateExchangePort;
 import com.wex.infra.adapter.out.treasury_api.dto.response.ResponseAPI;
 import com.wex.infra.adapter.out.treasury_api.mapper.ExchangeRateMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -14,8 +15,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class RateExchangeAdapter implements RateExchangePort {
-    private final RestTemplate restTemplate = new RestTemplate();
+
+    private final RestTemplate restTemplate;
 
     @Override
     public List<ExchangeRate> get(LocalDate date){
